@@ -3,16 +3,44 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
 
+const findTarget = async (req, res, next) => {
+  try {
+    if (req.params.id) {
+      const productById = await Product.findOne({
+        where: { id: req.params.id },
+        include: [
+          { model: Category },
+          { model: Tag }]
+      });
+      req.body.productById = productById;
+      next();
+    }
+  } catch { error => res.status(500) }
+}
+
 // get all products
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
+  try {
+    const products = await Product.findAll({
+      include: [
+        { model: Category },
+        { model: Tag }]
+    });
+    res.status(200).send(products);
+  } catch { error => res.status(500) }
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', findTarget, (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  try {
+    req.body.productById
+      ? res.status(200).send(req.body.productById)
+      : res.status(404).send('Error! Data Not Found')
+  } catch { error => res.status(500) }
 });
 
 // create new product
@@ -61,7 +89,8 @@ router.put('/:id', (req, res) => {
     })
     .then((productTags) => {
       // get list of current tag_ids
-      const productTagIds = productTags.map(({ tag_id }) => tag_id);
+      const productTagIds = productTags.map(({ tag_id }) => tag_id);//object destructuring
+      console.log(productTagIds)
       // create filtered list of new tag_ids
       const newProductTags = req.body.tagIds
         .filter((tag_id) => !productTagIds.includes(tag_id))
@@ -89,8 +118,14 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', findTarget, async (req, res) => {
   // delete one product by its `id` value
+  try {
+    req.body.productById
+      ? await Product.destroy({where:{id: req.params.id}})
+      : res.status(404).send('Error! Data Not Found');
+      res.status(204).send();
+  } catch { error => res.status(500) }
 });
 
 module.exports = router;
