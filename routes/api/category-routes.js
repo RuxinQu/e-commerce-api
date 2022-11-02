@@ -22,7 +22,7 @@ const findTarget = async (req, res, next) => {
       res.status(400).send()
     }
     next();
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 }
 
 router.get('/', async (req, res) => {
@@ -35,7 +35,7 @@ router.get('/', async (req, res) => {
       }
     });
     res.status(200).send(categories)
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 });
 
 router.get('/:id', findTarget, async (req, res) => {
@@ -45,7 +45,7 @@ router.get('/:id', findTarget, async (req, res) => {
     req.body.categoryById
       ? res.status(200).send(req.body.categoryById)
       : res.status(404).send('Error! Data Not Found')
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 });
 
 router.post('/', findTarget, async (req, res) => {
@@ -61,7 +61,7 @@ router.post('/', findTarget, async (req, res) => {
       })
       res.status(201).send(newCategory);
     }
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 });
 
 router.put('/:id', findTarget, async (req, res) => {
@@ -80,7 +80,7 @@ router.put('/:id', findTarget, async (req, res) => {
     } else {
       res.status(404).send('Error! Data Not Found')
     }
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 });
 
 router.delete('/:id', findTarget, async (req, res) => {
@@ -92,7 +92,7 @@ router.delete('/:id', findTarget, async (req, res) => {
     } else {
       res.status(404).send('Error! Data Not Found')
     }
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 });
 
 module.exports = router;

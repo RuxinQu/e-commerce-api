@@ -15,7 +15,7 @@ const findTarget = async (req, res, next) => {
       req.body.productById = productById;
       next();
     }
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 }
 
 // get all products
@@ -29,7 +29,7 @@ router.get('/', async (req, res) => {
         { model: Tag }]
     });
     res.status(200).send(products);
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 });
 
 // get one product
@@ -40,7 +40,7 @@ router.get('/:id', findTarget, (req, res) => {
     req.body.productById
       ? res.status(200).send(req.body.productById)
       : res.status(404).send('Error! Data Not Found')
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 });
 
 // create new product
@@ -125,7 +125,7 @@ router.delete('/:id', findTarget, async (req, res) => {
       ? await Product.destroy({where:{id: req.params.id}})
       : res.status(404).send('Error! Data Not Found');
       res.status(204).send();
-  } catch { error => res.status(500) }
+  } catch { error => res.status(500).send() }
 });
 
 module.exports = router;
