@@ -41,7 +41,7 @@ DB_PW= 'database_password'
 3. Validation is added to the PUT and DELETE routes. If there's no data matches the given id, an error will be thrown.
 4. Validation is added to the POST routes for category and tags endpoint to ensure no duplicated data is added.
 
-View the demo video of this project [**HERE**](https://drive.google.com/file/d/17_Bya1tx6vJfayajIrgHSwrvV4VfEKRR/view?usp=sharing).
+View the demo video of this project [**HERE**](https://drive.google.com/file/d/1Mg1N28SwJmqV65Ce2wwSeyVkVMqYQGLj/view?usp=share_link).
 
 ## License
 
