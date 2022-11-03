@@ -27,9 +27,7 @@ router.get('/', async (req, res) => {
   // be sure to include its associated Product data
   try {
     const tags = await Tag.findAll({
-      include: {
-        model: Product
-      }
+      include: { model: Product }
     });
     res.status(200).send(tags)
   } catch { error => res.status(500).send() }
@@ -51,11 +49,7 @@ router.post('/', findTarget, async (req, res) => {
     if (req.body.tagByName) {
       res.status(405).send('Can not post duplicate data')
     } else {
-      await Tag.create(req.body);
-      const newtag = await Tag.findOne({
-        where: { tag_name: req.body.tag_name },
-        include: { model: Product }
-      })
+      const newtag = await Tag.create(req.body);
       res.status(201).send(newtag);
     }
   } catch { error => res.status(500).send() }
@@ -80,7 +74,7 @@ router.put('/:id', findTarget, async (req, res) => {
   } catch { error => res.status(500).send() }
 });
 
-router.delete('/:id',findTarget,async (req, res) => {
+router.delete('/:id', findTarget, async (req, res) => {
   // delete on tag by its `id` value
   try {
     if (req.body.tagById) {

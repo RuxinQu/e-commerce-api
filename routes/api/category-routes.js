@@ -54,11 +54,7 @@ router.post('/', findTarget, async (req, res) => {
     if (req.body.categoryByName) {
       res.status(405).send('Can not post duplicate data')
     } else {
-      await Category.create(req.body);
-      const newCategory = await Category.findOne({
-        where: { category_name: req.body.category_name },
-        include: { model: Product }
-      })
+      const newCategory = await Category.create(req.body);
       res.status(201).send(newCategory);
     }
   } catch { error => res.status(500).send() }
